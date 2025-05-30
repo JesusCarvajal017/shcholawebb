@@ -11,7 +11,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [Produces("application/json")]
     public class RolFormPermissionController : ControllerBase
     {

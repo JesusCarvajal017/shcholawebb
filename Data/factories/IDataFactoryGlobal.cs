@@ -10,6 +10,7 @@ namespace Data.factories
         CrudGeneric<User> CreateUserData();
 
         CrudGeneric<RolFormPermission> CreateRolFormPermissionData();
+        CrudGeneric<UserRol> CreateUserRolData();
         Auth CreateAuth();
 
     }

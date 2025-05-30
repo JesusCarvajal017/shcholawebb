@@ -17,7 +17,9 @@ namespace Api.ServicesCollection
 
             services.AddScoped<PersonBussines>();
             services.AddScoped<UserBusiness>();
+            services.AddScoped<UserRolBusiness>();
             services.AddScoped<RolFormPermissionBusiness>();
+
             services.AddScoped<AuthGlobal>();
 
             return services;

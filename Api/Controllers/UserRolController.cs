@@ -1,6 +1,8 @@
 ﻿
 using Business.service;
+using Entity.Dtos.RolFormPermission;
 using Entity.Dtos.User;
+using Entity.Dtos.UserRol;
 using Entity.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +14,13 @@ namespace Web.Controllers
     [ApiController]
     [Authorize]
     [Produces("application/json")]
-    public class UserController : ControllerBase
+    public class UserRolController : ControllerBase
     {
-        private readonly UserBusiness _UserBusiness;
-        private readonly ILogger<UserController> _logger;
+        private readonly UserRolBusiness _UserBusiness;
+        private readonly ILogger<UserRolController> _logger;
 
         /// Constructor del controlador de permisos
-        public UserController(UserBusiness UserBusiness, ILogger<UserController> logger)
+        public UserRolController(UserRolBusiness UserBusiness, ILogger<UserRolController> logger)
         {
             _UserBusiness = UserBusiness;
             _logger = logger;
@@ -26,7 +28,7 @@ namespace Web.Controllers
 
         // QUERY ALL
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<UserRolDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -44,7 +46,7 @@ namespace Web.Controllers
 
         // QUERY BY ID
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UserDto), 200)]
+        [ProducesResponseType(typeof(UserRolDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -72,12 +74,12 @@ namespace Web.Controllers
             }
         }
 
-        // INSERT 
+        //// INSERT 
         [HttpPost]
-        [ProducesResponseType(typeof(UserDto), 201)]
+        [ProducesResponseType(typeof(UserRolCreateDtos), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateUser([FromBody] UserDto UserDto)
+        public async Task<IActionResult> CreateUser([FromBody] UserRolCreateDtos UserDto)
         {
             try
             {
@@ -96,70 +98,70 @@ namespace Web.Controllers
             }
         }
 
-        // UPDATE
-        [HttpPut("update")]
-        [ProducesResponseType(typeof(Object), 200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateUser([FromBody] UserDto UserDto)
-        {
-            try
-            {
-                var update = await _UserBusiness.UpdateAsync(UserDto);
-                return Ok(update);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizacion el User con ID: {UserId}", UserDto.Id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "User no encontrado con ID: {UserId}", UserDto.Id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al actualizar el User con ID: {UserId}", UserDto.Id);
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
+        //// UPDATE
+        //[HttpPut("update")]
+        //[ProducesResponseType(typeof(Object), 200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(404)]
+        //[ProducesResponseType(500)]
+        //public async Task<IActionResult> UpdateUser([FromBody] UserDto UserDto)
+        //{
+        //    try
+        //    {
+        //        var update = await _UserBusiness.UpdateAsync(UserDto);
+        //        return Ok(update);
+        //    }
+        //    catch (ValidationException ex)
+        //    {
+        //        _logger.LogWarning(ex, "Validación fallida al actualizacion el User con ID: {UserId}", UserDto.Id);
+        //        return BadRequest(new { message = ex.Message });
+        //    }
+        //    catch (EntityNotFoundException ex)
+        //    {
+        //        _logger.LogInformation(ex, "User no encontrado con ID: {UserId}", UserDto.Id);
+        //        return NotFound(new { message = ex.Message });
+        //    }
+        //    catch (ExternalServiceException ex)
+        //    {
+        //        _logger.LogError(ex, "Error al actualizar el User con ID: {UserId}", UserDto.Id);
+        //        return StatusCode(500, new { message = ex.Message });
+        //    }
+        //}
 
-        // DELETE => LOGICAL
+        //// DELETE => LOGICAL
 
-        [HttpPatch("logical/{id}")]
-        [ProducesResponseType(typeof(Object), 200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> DeletleForm(int id, [FromBody] User user)
-        {
-            try
-            {
-                var response = await _UserBusiness.DeleteLogicalAsync(id, user);
-                return Ok(response);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al eliminar el form con ID: {FormId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Form no encontrado con ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al eliminar el form con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
+        //[HttpPatch("logical/{id}")]
+        //[ProducesResponseType(typeof(Object), 200)]
+        //[ProducesResponseType(204)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(404)]
+        //[ProducesResponseType(500)]
+        //public async Task<IActionResult> DeletleForm(int id, [FromBody] User user)
+        //{
+        //    try
+        //    {
+        //        var response = await _UserBusiness.DeleteLogicalAsync(id, user);
+        //        return Ok(response);
+        //    }
+        //    catch (ValidationException ex)
+        //    {
+        //        _logger.LogWarning(ex, "Validación fallida al eliminar el form con ID: {FormId}", id);
+        //        return BadRequest(new { message = ex.Message });
+        //    }
+        //    catch (EntityNotFoundException ex)
+        //    {
+        //        _logger.LogInformation(ex, "Form no encontrado con ID: {FormId}", id);
+        //        return NotFound(new { message = ex.Message });
+        //    }
+        //    catch (ExternalServiceException ex)
+        //    {
+        //        _logger.LogError(ex, "Error al eliminar el form con ID: {FormId}", id);
+        //        return StatusCode(500, new { message = ex.Message });
+        //    }
+        //}
 
-        // DELETE => PERSISTENT
+        //// DELETE => PERSISTENT
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(Object), 200)]
         [ProducesResponseType(204)]
@@ -188,6 +190,7 @@ namespace Web.Controllers
                 _logger.LogError(ex, "Error al eliminar el User con ID: {UserId}", id);
                 return StatusCode(500, new { message = ex.Message });
             }
+
         }
     }
 }

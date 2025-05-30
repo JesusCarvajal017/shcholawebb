@@ -2,6 +2,7 @@
 using Entity.Dtos;
 using Entity.Dtos.RolFormPermission;
 using Entity.Dtos.User;
+using Entity.Dtos.UserRol;
 using Entity.Model;
 
 namespace Helper.autoMapper
@@ -23,7 +24,13 @@ namespace Helper.autoMapper
                  .ForMember(dest => dest.FormName, opt => opt.MapFrom(src => src.Form.Name))
                  .ForMember(dest => dest.PermissionName, opt => opt.MapFrom(src => src.Permission.Name));
 
+            CreateMap<UserRol, UserRolDto>()
+               .ForMember(dest => dest.NameUser, opt => opt.MapFrom(src => src.User.UserName))
+               .ForMember(dest => dest.RolName, opt => opt.MapFrom(src => src.Rol.Name));
 
+
+
+            CreateMap<UserRol, UserRolCreateDtos>().ReverseMap();
             CreateMap<RolFormPermission, RolFormPermissionCreateDto>().ReverseMap();
         }
     }

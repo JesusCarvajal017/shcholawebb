@@ -41,6 +41,12 @@ namespace Data.factories
             return new RolFormPermissionData(_context, logger);
         }
 
+        public CrudGeneric<UserRol> CreateUserRolData()
+        {
+            var logger = _loggerFactory.CreateLogger<UserRol>();
+            return new UserRolData(_context, logger);
+        }
+
         public Auth CreateAuth()
         {
             var logger = _loggerFactory.CreateLogger<AuthData>();

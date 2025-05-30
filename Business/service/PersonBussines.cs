@@ -22,8 +22,6 @@ namespace Business.service
 
             if (string.IsNullOrWhiteSpace(person.Name))
                 throw new ValidationException("El título del formulario es obligatorio.");
-
- 
         }
 
     }

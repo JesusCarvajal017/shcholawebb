@@ -1,9 +1,8 @@
 ﻿using Business.global;
 using Business.service;
 using Entity.Dtos.Auth;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Utilities.Exeptions;
 
 namespace Api.Controllers
@@ -13,12 +12,22 @@ namespace Api.Controllers
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthGlobal _authBussines;
+        private readonly AuthGlobal _authBusiness;
+        private readonly PersonBussines _personBusiness;
+        private readonly UserBusiness _userBusinesss;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(AuthGlobal authBussines,ILogger<AuthController> logger) 
+        public AuthController
+            (
+                AuthGlobal authBussines,
+                ILogger<AuthController> logger,
+                PersonBussines personBusiness,
+                UserBusiness userBusiness
+            ) 
         {
-            _authBussines = authBussines;
+            _authBusiness = authBussines;
+            _personBusiness = personBusiness;
+            _userBusinesss = userBusiness;
             _logger = logger;
         }
 
@@ -32,7 +41,7 @@ namespace Api.Controllers
         {
             try
             {
-                var update = await _authBussines.AuthApp(login);
+                var update = await _authBusiness.AuthApp(login);
                 return Ok(update);
             }
             catch (ValidationException ex)
@@ -51,9 +60,6 @@ namespace Api.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
-
-
 
     }
 } 
